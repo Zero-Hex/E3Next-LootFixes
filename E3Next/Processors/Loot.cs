@@ -684,9 +684,6 @@ namespace E3Core.Processors
                     if (LootStackableSettings.LootNonStackable && !nodrop && itemValue >= LootStackableSettings.LootValueGreaterThanInCopper)
                     {
                         importantItem = true;
-                        LootDataFile.Keep.Add(corpseItem);
-                        E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
-                        LootDataFile.SaveData();
                     }
                 }
 				else if (E3.GeneralSettings.Loot_OnlyStackableEnabled)
@@ -743,9 +740,6 @@ namespace E3Core.Processors
                     if (!foundInFile && !nodrop && itemValue >= E3.GeneralSettings.Loot_OnlyStackableValueGreaterThanInCopper)
                     {
                         importantItem = true;
-                        LootDataFile.Keep.Add(corpseItem);
-                        E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
-                        LootDataFile.SaveData();
                     }
                     //If the item doesn't match the value then it simply ignores the item on the corpse and moves on. Previously the default here was to add the item as a KEEP item.
                     else if (!foundInFile && !nodrop)
@@ -924,9 +918,6 @@ namespace E3Core.Processors
                     if (LootStackableSettings.LootNonStackable && !nodrop && itemValue >= LootStackableSettings.LootValueGreaterThanInCopper)
                     {
                         importantItem = true;
-                        LootDataFile.Keep.Add(corpseItem);
-                        E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
-                        LootDataFile.SaveData();
                     }
                 }
 				else if (E3.GeneralSettings.Loot_OnlyStackableEnabled)
@@ -982,9 +973,6 @@ namespace E3Core.Processors
                     if (!foundInFile && !nodrop && itemValue >= E3.GeneralSettings.Loot_OnlyStackableValueGreaterThanInCopper)
                     {
                         importantItem = true;
-                        LootDataFile.Keep.Add(corpseItem);
-                        E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
-                        LootDataFile.SaveData();
                     }
                     //If the item doesn't match the value then it simply ignores the item on the corpse and moves on. Previously the default here was to add the item as a KEEP item.
                     else if (!foundInFile && !nodrop)
