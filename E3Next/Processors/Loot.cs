@@ -564,7 +564,11 @@ namespace E3Core.Processors
             for (Int32 i = 1; i <= corpseItems; i++)
             {
               
-                //lets loot it if we can!
+                //Clear cursor in-case of Container
+                MQ.Cmd("/autoinv");
+				//delay until the cursor is empty
+				MQ.Delay(1000, "${If[${Cursor.ID},FALSE,TRUE]}");
+                
                 MQ.Cmd($"/nomodkey /shift /itemnotify loot{i} leftmouseup", 300);
                 MQ.Delay(1000, "${Cursor.ID}");
                 Int32 cursorid = MQ.Query<Int32>("${Cursor.ID}");
@@ -672,7 +676,15 @@ namespace E3Core.Processors
 							importantItem = true;
 						}
 					}
-				}
+                    //Checks to see if the item has a value that is greater than or equal to what is set in Individual Character specific.ini for copper value for Lootonly Stackable. This is only enabled when the Loot Non-Stackable is set to On.
+                    if (LootStackableSettings.LootNonStackable && !nodrop && itemValue >= LootStackableSettings.LootValueGreaterThanInCopper)
+                    {
+                        importantItem = true;
+                        LootDataFile.Keep.Add(corpseItem);
+                        E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
+                        LootDataFile.SaveData();
+                    }
+                }
 				else if (E3.GeneralSettings.Loot_OnlyStackableEnabled)
                 {
                     //this is the legacy general settigs for loot stackable
@@ -723,14 +735,19 @@ namespace E3Core.Processors
                         importantItem = false;
                         foundInFile = true;
                     }
-                    if (!foundInFile && !nodrop)
+                    //Checks to see if the item has a value that is greater than or equal to what is set in GeneralSettings.ini for copper value for Lootonly Stackable. That does not need to be enabled for this to function. Note this will loot non-stackable items that match the value.
+                    if (!foundInFile && !nodrop && itemValue >= E3.GeneralSettings.Loot_OnlyStackableValueGreaterThanInCopper)
                     {
                         importantItem = true;
                         LootDataFile.Keep.Add(corpseItem);
                         E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
                         LootDataFile.SaveData();
                     }
-
+                    //If the item doesn't match the value then it simply ignores the item on the corpse and moves on. Previously the default here was to add the item as a KEEP item.
+                    else if (!foundInFile && !nodrop)
+                    {
+                        importantItem = false;
+                    }
                 }
 
                 //check if its lore
@@ -895,7 +912,15 @@ namespace E3Core.Processors
 							importantItem = true;
 						}
 					}
-				}
+                    //Checks to see if the item has a value that is greater than or equal to what is set in Individual Character specific.ini for copper value for Lootonly Stackable. This is only enabled when the Loot Non-Stackable is set to On.
+                    if (LootStackableSettings.LootNonStackable && !nodrop && itemValue >= LootStackableSettings.LootValueGreaterThanInCopper)
+                    {
+                        importantItem = true;
+                        LootDataFile.Keep.Add(corpseItem);
+                        E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
+                        LootDataFile.SaveData();
+                    }
+                }
 				else if (E3.GeneralSettings.Loot_OnlyStackableEnabled)
                 {
                     //check if in our always loot.
@@ -945,14 +970,19 @@ namespace E3Core.Processors
                         importantItem = false;
                         foundInFile = true;
                     }
-					if (!foundInFile && !nodrop)
+                    //Checks to see if the item has a value that is greater than or equal to what is set in GeneralSettings.ini for copper value for Lootonly Stackable. That does not need to be enabled for this to function. Note this will loot non-stackable items that match the value.
+                    if (!foundInFile && !nodrop && itemValue >= E3.GeneralSettings.Loot_OnlyStackableValueGreaterThanInCopper)
                     {
                         importantItem = true;
                         LootDataFile.Keep.Add(corpseItem);
                         E3.Bots.BroadcastCommandToGroup($"/E3LootAdd \"{corpseItem}\" KEEP");
                         LootDataFile.SaveData();
                     }
-
+                    //If the item doesn't match the value then it simply ignores the item on the corpse and moves on. Previously the default here was to add the item as a KEEP item.
+                    else if (!foundInFile && !nodrop)
+                    {
+                        importantItem = false;
+                    }
                 }
 
                 //check if its lore
