@@ -563,7 +563,8 @@ namespace E3Core.Processors
 
             for (Int32 i = 1; i <= corpseItems; i++)
             {
-             //lets loot it if we can!
+              
+                //lets loot it if we can!
                 MQ.Cmd($"/nomodkey /shift /itemnotify loot{i} leftmouseup", 300);
                 MQ.Delay(1000, "${Cursor.ID}");
                 Int32 cursorid = MQ.Query<Int32>("${Cursor.ID}");
