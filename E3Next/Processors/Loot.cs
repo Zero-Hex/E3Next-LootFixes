@@ -563,7 +563,11 @@ namespace E3Core.Processors
 
             for (Int32 i = 1; i <= corpseItems; i++)
             {
-              
+            //Autoinv whatever is on cursor to clear off.
+            MQ.Cmd("/autoinv");
+            //delay until the cursor is empty
+            MQ.Delay(1000, "${If[${Cursor.ID},FALSE,TRUE]}");
+
                 //lets loot it if we can!
                 MQ.Cmd($"/nomodkey /shift /itemnotify loot{i} leftmouseup", 300);
                 MQ.Delay(1000, "${Cursor.ID}");
@@ -813,6 +817,10 @@ namespace E3Core.Processors
 
             for(Int32 i =1;i<=corpseItems;i++)
             {
+            //Autoinv whatever is on cursor to clear off.
+            MQ.Cmd("/autoinv");
+            //delay until the cursor is empty
+            MQ.Delay(1000, "${If[${Cursor.ID},FALSE,TRUE]}");
                 //lets try and loot them.
                 importantItem = false;
 
